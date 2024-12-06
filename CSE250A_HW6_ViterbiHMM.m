@@ -18,11 +18,6 @@ T = size(Observation,2); % Number of observations (number of time steps).
 Probability = zeros(n, T); % Log probability for each state.
 Indices = zeros(n, T); % Backtracking indices.
 
-% Add small value to avoid log(0).
-InitialState = max(InitialState, eps);
-Transition = max(Transition, eps);
-Emission = max(Emission, eps);
-
 % Viterbi algorithm. ------------------------------------------------------
 % Calculate the first column.
 for i = 1:n
@@ -35,11 +30,11 @@ for t = 2:T % Loop over each time step.
         CurrentProbability_max = -inf; % Initialize the current log probability as -inf.
         CurrentIndex = -1; % Initialize the current backtracking index as -1.
 
-        for k = 1:n
-            CurrentProbability = Probability(k, t-1) + log(Transition(k,j));
+        for i = 1:n
+            CurrentProbability = Probability(i, t-1) + log(Transition(i,j));
             if CurrentProbability > CurrentProbability_max
                 CurrentProbability_max = CurrentProbability;
-                CurrentIndex = k;
+                CurrentIndex = i;
             end
         end
 
